@@ -52,7 +52,7 @@ A simple web app that lets users upload and download files securely. Every file 
 ## Usage
 
 - Go to `/upload` to select and upload a file
-- Go to `/download` to retrieve a file by name.
+- Go to `/download` to retrieve a file by name (Make sure the name consist the extension of the required file too).
 - Encrypted files are saved in the `storage/` folder with a `.enc` extension.
 
 ---
