@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Upload Success</title>
+  <link href="https://fonts.googleapis.com/css?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background: linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%);
+      font-family: 'Share Tech Mono', monospace;
+      min-height: 100vh;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.3s;
+    }
+    .card {
+      background: #fff;
+      padding: 2.5rem 2rem;
+      border-radius: 16px;
+      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+      text-align: center;
+      min-width: 320px;
+      transition: background 0.3s, color 0.3s;
+    }
+    h2 {
+      color: #4f8cff;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      letter-spacing: 1px;
+    }
+    .filename {
+      color: #2563eb;
+      font-size: 1.1rem;
+      margin-bottom: 1.5rem;
+      word-break: break-all;
+    }
+    .btn {
+      background: #fff;
+      color: #4f8cff;
+      border: 2px solid #4f8cff;
+      border-radius: 6px;
+      padding: 0.5rem 1.5rem;
+      font-size: 1rem;
+      font-family: inherit;
+      font-weight: 700;
+      cursor: pointer;
+      margin: 0.5rem 0.5rem 0 0;
+      transition: background 0.2s, color 0.2s, border-color 0.2s;
+      text-decoration: none;
+      display: inline-block;
+    }
+    .btn:hover {
+      background: #4f8cff;
+      color: #fff;
+    }
+    .dark .card {
+      background: #23272f;
+      color: #e0eafc;
+    }
+    .dark h2 {
+      color: #90cdf4;
+    }
+    .dark .filename {
+      color: #90cdf4;
+    }
+    .dark .btn {
+      background: #23272f;
+      color: #90cdf4;
+      border-color: #90cdf4;
+    }
+    .dark .btn:hover {
+      background: #90cdf4;
+      color: #23272f;
+    }
+    /* Toggle Switch Styles */
+    .toggle-switch {
+      position: absolute;
+      top: 24px;
+      right: 24px;
+      display: flex;
+      align-items: center;
+      z-index: 10;
+    }
+    .toggle-switch input {
+      display: none;
+    }
+    .slider {
+      width: 44px;
+      height: 24px;
+      background: #bfc9d9;
+      border-radius: 24px;
+      position: relative;
+      transition: background 0.3s;
+      cursor: pointer;
+    }
+    .slider:before {
+      content: '';
+      position: absolute;
+      left: 4px;
+      top: 4px;
+      width: 16px;
+      height: 16px;
+      background: #fff;
+      border-radius: 50%;
+      transition: transform 0.3s;
+    }
+    input:checked + .slider {
+      background: #4f8cff;
+    }
+    input:checked + .slider:before {
+      transform: translateX(20px);
+      background: #23272f;
+    }
+    .toggle-label {
+      margin-left: 10px;
+      font-size: 1rem;
+      color: #2d3a4b;
+      font-weight: 500;
+      transition: color 0.3s;
+    }
+    .dark .toggle-label {
+      color: #e0eafc;
+    }
+  </style>
+</head>
+<body>
+  <div class="toggle-switch">
+    <label style="display:flex;align-items:center;cursor:pointer;">
+      <input type="checkbox" id="theme-toggle" />
+      <span class="slider"></span>
+      <span class="toggle-label">Dark Mode</span>
+    </label>
+  </div>
+  <div class="card">
+    <h2>File Uploaded Successfully!</h2>
+    {% if filenames|length > 1 %}
+      <div class="filename"><strong>Files:</strong>
+        <ul style="padding-left:1.2em;text-align:left;">
+          {% for fname in filenames %}
+            <li>{{ fname }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+    {% else %}
+      <div class="filename">{{ filenames[0] }}</div>
+    {% endif %}
+    <a href="/upload" class="btn">Back to Upload</a>
+    <a href="/download" class="btn">Go to Download Page</a>
+  </div>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const toggle = document.getElementById('theme-toggle');
+      const body = document.body;
+      if (localStorage.getItem('theme') === 'dark') {
+        body.classList.add('dark');
+        toggle.checked = true;
+      }
+      toggle.addEventListener('change', function() {
+        if (this.checked) {
+          body.classList.add('dark');
+          localStorage.setItem('theme', 'dark');
+        } else {
+          body.classList.remove('dark');
+          localStorage.setItem('theme', 'light');
+        }
+      });
+    });
+  </script>
+</body>
+</html> 

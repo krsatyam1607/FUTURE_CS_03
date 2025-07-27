@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Upload File</title>
+  <link href="https://fonts.googleapis.com/css?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background: linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%);
+      font-family: 'Share Tech Mono', monospace;
+      min-height: 100vh;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.3s;
+    }
+    .card {
+      background: #fff;
+      padding: 2.5rem 2rem;
+      border-radius: 16px;
+      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+      text-align: center;
+      min-width: 320px;
+      transition: background 0.3s, color 0.3s;
+    }
+    h2 {
+      margin-bottom: 1.5rem;
+      color: #2d3a4b;
+      font-weight: 700;
+      transition: color 0.3s;
+    }
+    input[type="file"] {
+      margin-bottom: 1.2rem;
+      border: 1px solid #bfc9d9;
+      border-radius: 6px;
+      padding: 0.5rem;
+      width: 100%;
+      background: #fff;
+      color: #2d3a4b;
+      transition: background 0.3s, color 0.3s;
+    }
+    button {
+      background: #4f8cff;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      padding: 0.7rem 2.2rem;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.2s;
+      margin-top: 0.5rem;
+    }
+    button:hover {
+      background: #2563eb;
+    }
+    a {
+      display: inline-block;
+      margin-top: 1.5rem;
+      color: #4f8cff;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    a:hover {
+      color: #2563eb;
+      text-decoration: underline;
+    }
+    /* Dark mode styles */
+    body.dark {
+      background: linear-gradient(135deg, #232526 0%, #414345 100%);
+    }
+    .dark .card {
+      background: #23272f;
+      color: #e0eafc;
+    }
+    .dark h2 {
+      color: #e0eafc;
+    }
+    .dark input[type="file"] {
+      background: #23272f;
+      color: #e0eafc;
+      border: 1px solid #4f8cff;
+    }
+    .dark button {
+      background: #2563eb;
+      color: #fff;
+    }
+    .dark button:hover {
+      background: #4f8cff;
+    }
+    .dark a {
+      color: #90cdf4;
+    }
+    .dark a:hover {
+      color: #63b3ed;
+    }
+    /* Toggle Switch Styles */
+    .toggle-switch {
+      position: absolute;
+      top: 24px;
+      right: 24px;
+      display: flex;
+      align-items: center;
+      z-index: 10;
+    }
+    .toggle-switch input {
+      display: none;
+    }
+    .slider {
+      width: 44px;
+      height: 24px;
+      background: #bfc9d9;
+      border-radius: 24px;
+      position: relative;
+      transition: background 0.3s;
+      cursor: pointer;
+    }
+    .slider:before {
+      content: '';
+      position: absolute;
+      left: 4px;
+      top: 4px;
+      width: 16px;
+      height: 16px;
+      background: #fff;
+      border-radius: 50%;
+      transition: transform 0.3s;
+    }
+    input:checked + .slider {
+      background: #4f8cff;
+    }
+    input:checked + .slider:before {
+      transform: translateX(20px);
+      background: #23272f;
+    }
+    .toggle-label {
+      margin-left: 10px;
+      font-size: 1rem;
+      color: #2d3a4b;
+      font-weight: 500;
+      transition: color 0.3s;
+    }
+    .dark .toggle-label {
+      color: #e0eafc;
+    }
+    .drop-area {
+      border: 2px dashed #4f8cff;
+      border-radius: 10px;
+      padding: 2rem 1rem;
+      margin-bottom: 1.2rem;
+      background: #f4f8fb;
+      color: #4f8cff;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: background 0.3s, color 0.3s, border-color 0.3s;
+    }
+    .drop-area.dragover {
+      background: #e0eafc;
+      color: #2563eb;
+      border-color: #2563eb;
+    }
+    .dark .drop-area {
+      background: #23272f;
+      color: #90cdf4;
+      border-color: #90cdf4;
+    }
+    .dark .drop-area.dragover {
+      background: #414345;
+      color: #63b3ed;
+      border-color: #63b3ed;
+    }
+    .file-info {
+      margin-bottom: 1rem;
+      padding: 0.7rem 1rem;
+      background: #e0eafc;
+      border-radius: 8px;
+      color: #2563eb;
+      font-size: 1rem;
+      display: none;
+      text-align: left;
+      word-break: break-all;
+      box-shadow: 0 2px 8px 0 rgba(31, 38, 135, 0.07);
+    }
+    .dark .file-info {
+      background: #23272f;
+      color: #90cdf4;
+    }
+    .clear-btn {
+      background: #fff;
+      color: #4f8cff;
+      border: 2px solid #4f8cff;
+      border-radius: 6px;
+      padding: 0.5rem 1.5rem;
+      font-size: 1rem;
+      font-family: inherit;
+      font-weight: 700;
+      cursor: pointer;
+      margin-bottom: 1rem;
+      margin-top: 0.5rem;
+      transition: background 0.2s, color 0.2s, border-color 0.2s;
+      display: none;
+    }
+    .clear-btn:hover {
+      background: #4f8cff;
+      color: #fff;
+    }
+    .dark .clear-btn {
+      background: #23272f;
+      color: #90cdf4;
+      border-color: #90cdf4;
+    }
+    .dark .clear-btn:hover {
+      background: #90cdf4;
+      color: #23272f;
+    }
+  </style>
+</head>
+<body>
+  <div class="toggle-switch">
+    <label style="display:flex;align-items:center;cursor:pointer;">
+      <input type="checkbox" id="theme-toggle" />
+      <span class="slider"></span>
+      <span class="toggle-label">Dark Mode</span>
+    </label>
+  </div>
+  <div class="card">
+    <h2>Upload File <span style="font-size:0.8em; color:#4f8cff;">(AES Encrypted)</span></h2>
+    <div class="drop-area" id="drop-area">
+      Drag & Drop your files here or click to select
+    </div>
+    <div class="file-info" id="file-info"></div>
+    <button type="button" class="clear-btn" id="clear-btn">Clear</button>
+    <form action="/upload" method="post" enctype="multipart/form-data" id="upload-form">
+      <input type="file" name="file" id="file-input" multiple required style="display:none;">
+      <br>
+      <button type="submit">Upload</button>
+    </form>
+    <a href="/download">Go to Download Page</a>
+  </div>
+</body>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const toggle = document.getElementById('theme-toggle');
+    const body = document.body;
+    if (localStorage.getItem('theme') === 'dark') {
+      body.classList.add('dark');
+      toggle.checked = true;
+    }
+    toggle.addEventListener('change', function() {
+      if (this.checked) {
+        body.classList.add('dark');
+        localStorage.setItem('theme', 'dark');
+      } else {
+        body.classList.remove('dark');
+        localStorage.setItem('theme', 'light');
+      }
+    });
+
+    // Drag and Drop logic
+    const dropArea = document.getElementById('drop-area');
+    const fileInput = document.getElementById('file-input');
+    const form = document.getElementById('upload-form');
+    const fileInfo = document.getElementById('file-info');
+    const clearBtn = document.getElementById('clear-btn');
+
+    dropArea.addEventListener('click', () => fileInput.click());
+
+    dropArea.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      dropArea.classList.add('dragover');
+    });
+    dropArea.addEventListener('dragleave', (e) => {
+      e.preventDefault();
+      dropArea.classList.remove('dragover');
+    });
+    dropArea.addEventListener('drop', (e) => {
+      e.preventDefault();
+      dropArea.classList.remove('dragover');
+      if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+        fileInput.files = e.dataTransfer.files;
+        showFileInfo(fileInput.files);
+        // Optionally auto-submit:
+        // form.submit();
+      }
+    });
+    fileInput.addEventListener('change', () => {
+      if (fileInput.files.length > 0) {
+        if (fileInput.files.length === 1) {
+          dropArea.textContent = fileInput.files[0].name;
+        } else {
+          dropArea.textContent = fileInput.files.length + ' files selected';
+        }
+        showFileInfo(fileInput.files);
+      } else {
+        dropArea.textContent = 'Drag & Drop your files here or click to select';
+        fileInfo.style.display = 'none';
+      }
+    });
+    function showFileInfo(files) {
+      if (files && files.length > 0) {
+        let html = '<strong>Files:</strong><ul style="padding-left:1.2em;">';
+        for (let i = 0; i < files.length; i++) {
+          html += `<li>${files[i].name} <span style='color:#888;font-size:0.95em;'>(${(files[i].size/1024).toFixed(2)} KB)</span></li>`;
+        }
+        html += '</ul>';
+        fileInfo.innerHTML = html;
+        fileInfo.style.display = 'block';
+        clearBtn.style.display = 'inline-block';
+      } else {
+        fileInfo.style.display = 'none';
+        clearBtn.style.display = 'none';
+      }
+    }
+    clearBtn.addEventListener('click', function() {
+      fileInput.value = '';
+      showFileInfo([]);
+      dropArea.textContent = 'Drag & Drop your files here or click to select';
+    });
+  });
+</script>
+</html>

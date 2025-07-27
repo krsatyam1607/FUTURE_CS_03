@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Download File</title>
+  <link href="https://fonts.googleapis.com/css?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background: linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%);
+      font-family: 'Share Tech Mono', monospace;
+      min-height: 100vh;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.3s;
+    }
+    .card {
+      background: #fff;
+      padding: 2.5rem 2rem;
+      border-radius: 16px;
+      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+      text-align: center;
+      min-width: 320px;
+      transition: background 0.3s, color 0.3s;
+    }
+    h2 {
+      margin-bottom: 1.5rem;
+      color: #2d3a4b;
+      font-weight: 700;
+      transition: color 0.3s;
+    }
+    input[type="text"] {
+      border: 1px solid #bfc9d9;
+      border-radius: 6px;
+      padding: 0.5rem;
+      width: 100%;
+      margin-bottom: 1.2rem;
+      background: #fff;
+      color: #2d3a4b;
+      transition: background 0.3s, color 0.3s;
+    }
+    button {
+      background: #4f8cff;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      padding: 0.7rem 2.2rem;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.2s;
+      margin-top: 0.5rem;
+    }
+    button:hover {
+      background: #2563eb;
+    }
+    a {
+      display: inline-block;
+      margin-top: 1.5rem;
+      color: #4f8cff;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    a:hover {
+      color: #2563eb;
+      text-decoration: underline;
+    }
+    /* Dark mode styles */
+    body.dark {
+      background: linear-gradient(135deg, #232526 0%, #414345 100%);
+    }
+    .dark .card {
+      background: #23272f;
+      color: #e0eafc;
+    }
+    .dark h2 {
+      color: #e0eafc;
+    }
+    .dark input[type="text"] {
+      background: #23272f;
+      color: #e0eafc;
+      border: 1px solid #4f8cff;
+    }
+    .dark button {
+      background: #2563eb;
+      color: #fff;
+    }
+    .dark button:hover {
+      background: #4f8cff;
+    }
+    .dark a {
+      color: #90cdf4;
+    }
+    .dark a:hover {
+      color: #63b3ed;
+    }
+    /* Toggle Switch Styles */
+    .toggle-switch {
+      position: absolute;
+      top: 24px;
+      right: 24px;
+      display: flex;
+      align-items: center;
+      z-index: 10;
+    }
+    .toggle-switch input {
+      display: none;
+    }
+    .slider {
+      width: 44px;
+      height: 24px;
+      background: #bfc9d9;
+      border-radius: 24px;
+      position: relative;
+      transition: background 0.3s;
+      cursor: pointer;
+    }
+    .slider:before {
+      content: '';
+      position: absolute;
+      left: 4px;
+      top: 4px;
+      width: 16px;
+      height: 16px;
+      background: #fff;
+      border-radius: 50%;
+      transition: transform 0.3s;
+    }
+    input:checked + .slider {
+      background: #4f8cff;
+    }
+    input:checked + .slider:before {
+      transform: translateX(20px);
+      background: #23272f;
+    }
+    .toggle-label {
+      margin-left: 10px;
+      font-size: 1rem;
+      color: #2d3a4b;
+      font-weight: 500;
+      transition: color 0.3s;
+    }
+    .dark .toggle-label {
+      color: #e0eafc;
+    }
+    .error-message {
+      background: #ffeaea;
+      color: #d32f2f;
+      border: 1px solid #d32f2f;
+      border-radius: 8px;
+      padding: 0.7rem 1rem;
+      margin-bottom: 1rem;
+      font-size: 1rem;
+      font-family: inherit;
+      word-break: break-all;
+      box-shadow: 0 2px 8px 0 rgba(31, 38, 135, 0.07);
+      text-align: left;
+      display: block;
+    }
+    .dark .error-message {
+      background: #3a2323;
+      color: #ffb4b4;
+      border-color: #ffb4b4;
+    }
+  </style>
+</head>
+<body>
+  <div class="toggle-switch">
+    <label style="display:flex;align-items:center;cursor:pointer;">
+      <input type="checkbox" id="theme-toggle" />
+      <span class="slider"></span>
+      <span class="toggle-label">Dark Mode</span>
+    </label>
+  </div>
+  <div class="card">
+    {% if error %}
+      <div class="error-message">{{ error }}</div>
+    {% endif %}
+    <h2>Download File <span style="font-size:0.8em; color:#4f8cff;">(Decrypted)</span></h2>
+    <form action="/download" method="get">
+      <input type="text" name="filename" placeholder="Enter filename (e.g., test.txt)" required>
+      <br>
+      <button type="submit">Download</button>
+    </form>
+    <a href="/upload">Go to Upload Page</a>
+  </div>
+</body>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const toggle = document.getElementById('theme-toggle');
+    const body = document.body;
+    // Persist theme in localStorage
+    if (localStorage.getItem('theme') === 'dark') {
+      body.classList.add('dark');
+      toggle.checked = true;
+    }
+    toggle.addEventListener('change', function() {
+      if (this.checked) {
+        body.classList.add('dark');
+        localStorage.setItem('theme', 'dark');
+      } else {
+        body.classList.remove('dark');
+        localStorage.setItem('theme', 'light');
+      }
+    });
+  });
+</script>
+</html>
