@@ -5,7 +5,8 @@
 A simple web app that lets users upload and download files securely. Every file is **AES-256 encrypted** before being saved and decrypted when downloaded — keeping your data safe at rest.
 
 A walkthrough video of the app is included in this repo.
-**NOTE: This video will not play on the github as it is a big file. If you need to see that please proceed after downloading it first.**
+
+**NOTE: This video will not play on github as it is a big file. If you need to see that please proceed after downloading it first.**
 
 ---
 
